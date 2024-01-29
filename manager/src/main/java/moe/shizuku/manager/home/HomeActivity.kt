@@ -3,6 +3,7 @@ package moe.shizuku.manager.home
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.os.Process
 import android.text.method.LinkMovementMethod
@@ -108,7 +109,7 @@ abstract class HomeActivity : AppBarActivity() {
                 binding.sourceCode.movementMethod = LinkMovementMethod.getInstance()
                 binding.sourceCode.text = getString(
                     R.string.about_view_source_code,
-                    "<b><a href=\"https://github.com/RikkaApps/Shizuku\">GitHub</a></b>"
+                    "<b><a href=\"https://github.com/lZiMUl/Shizuku\">GitHub</a></b>"
                 ).toHtml()
                 binding.icon.setImageBitmap(
                     AppIconCache.getOrLoadBitmap(
@@ -122,6 +123,17 @@ abstract class HomeActivity : AppBarActivity() {
                 MaterialAlertDialogBuilder(this)
                     .setView(binding.root)
                     .show()
+                true
+            }
+            R.id.web_site -> {
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse("https://lzimul.top"))
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    println("当前手机未安装浏览器")
+                }
                 true
             }
             R.id.action_stop -> {

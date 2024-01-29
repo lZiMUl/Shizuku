@@ -13,6 +13,11 @@
         android:showAsAction="never"/>
 
     <item
+        android:id="@+id/web_site"
+        android:title="@string/web_site"
+        android:showAsAction="never"/>
+
+    <item
         android:id="@+id/action_about"
         android:title="@string/action_about"
         android:showAsAction="never"/>
