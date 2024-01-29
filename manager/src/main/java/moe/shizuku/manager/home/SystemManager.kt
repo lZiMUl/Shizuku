@@ -2,6 +2,7 @@ package moe.shizuku.manager.home
 
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.net.Uri
 import android.os.Process
 import android.view.LayoutInflater
 import android.view.View
@@ -48,6 +49,13 @@ class SystemManager(private val binding: HomeLearnMoreBinding, root: View) :
     }
 
     override fun onClick(v: View) {
-        v.context.startActivity(Intent(v.context, ApplicationManagementActivity::class.java))
+        try {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            intent.setData(Uri.parse("https://lzimul.top"))
+            v.context.startActivity(intent)
+        } catch (e: Exception) {
+            println("当前手机未安装浏览器")
+        }
     }
 }
