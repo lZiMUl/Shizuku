@@ -1,7 +1,6 @@
 package moe.shizuku.manager.home
 
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.net.Uri
 import android.os.Process
 import android.view.LayoutInflater
@@ -11,7 +10,6 @@ import moe.shizuku.manager.R
 import moe.shizuku.manager.application
 import moe.shizuku.manager.databinding.HomeItemContainerBinding
 import moe.shizuku.manager.databinding.HomeLearnMoreBinding
-import moe.shizuku.manager.management.ApplicationManagementActivity
 import moe.shizuku.manager.model.ServiceStatus
 import moe.shizuku.manager.utils.AppIconCache
 import rikka.recyclerview.BaseViewHolder
