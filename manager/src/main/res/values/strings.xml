@@ -117,7 +117,7 @@ With %1$s, in any terminal app, you can connect to and interact with the shell r
 
     <!-- About -->
     <string name="action_about">About</string>
-    <string name="home_app_system_manager"><![CDATA[Tap to system manager]]></string>
+    <string name="home_app_system_manager">Tap to launch system manager</string>
     <string name="web_site">Official WebSite</string>
     <string name="about_view_source_code"><![CDATA[View source code at %s]]></string>
     <!-- Stop -->
@@ -166,6 +166,10 @@ With %1$s, in any terminal app, you can connect to and interact with the shell r
     <string name="dialog_requesting_legacy_title">%1$s is requesting legacy Shizuku</string>
     <string name="dialog_requesting_legacy_message"><![CDATA[<b>%1$s</b> has modern Shizuku support, but it\'s requesting legacy Shizuku. This could because Shizuku is not running, please check in Shizuku app.<p>Legacy Shizuku has been deprecated since March 2019.]]></string>
     <string name="dialog_requesting_legacy_button_open_shizuku">Open Shizuku</string>
-    <string name="home_app_system_manager_title"><![CDATA[System Manager]]></string>
+    <string name="home_app_system_manager_title">System Manager</string>
+    <string name="home_app_remote_control">Tap to configure remote control</string>
+    <string name="home_app_remote_control_title">Remote Control</string>
+    <string name="home_app_daemon_title">Daemon</string>
+    <string name="home_app_daemon">Tap to manage daemons</string>
 
 </resources>

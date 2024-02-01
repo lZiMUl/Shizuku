@@ -130,5 +130,9 @@
     <string name="home_app_management_empty">已请求或声明 Shizuku 的应用程序将显示在此处。</string>
     <string name="home_adb_is_limited_title">您需要进行额外的步骤</string>
     <string name="home_adb_is_limited_description">您的设备制造商限制了 adb 的权限，使用 Shizuku 的应用无法正常工作。\n\n通常，在“开发者选项”中调整一些选项即可解除此限制。请阅读帮助来了解具体的操作方式。\n\n您可能需要重新启动 Shizuku 以使操作生效。</string>
-    <string name="home_app_system_manager_title"><![CDATA[系统管理器]]></string>
+    <string name="home_app_system_manager_title">系统管理器</string>
+    <string name="home_app_remote_control">点按配置远程控制</string>
+    <string name="home_app_remote_control_title">远程控制</string>
+    <string name="home_app_daemon">点按管理守护进程</string>
+    <string name="home_app_daemon_title">守护进程</string>
 </resources>

@@ -6,7 +6,6 @@ import moe.shizuku.manager.utils.EnvironmentUtils
 import moe.shizuku.manager.utils.UserHandleCompat
 import rikka.recyclerview.IdBasedRecyclerViewAdapter
 import rikka.recyclerview.IndexCreatorPool
-import rikka.shizuku.Shizuku
 
 class HomeAdapter(private val homeModel: HomeViewModel, private val appsModel: AppsViewModel) :
     IdBasedRecyclerViewAdapter(ArrayList()) {
@@ -41,10 +40,12 @@ class HomeAdapter(private val homeModel: HomeViewModel, private val appsModel: A
 
         clear()
         addItem(ServerStatusViewHolder.CREATOR, status, ID_STATUS)
-        addItem(SystemManager.CREATOR, status, ID_STATUS)
+        addItem(RemoteControlViewHolder.CREATOR, status, ID_APPS)
         if (adbPermission) {
+            addItem(SystemManagerViewHolder.CREATOR, status, ID_APPS)
             addItem(ManageAppsViewHolder.CREATOR, status to grantedCount, ID_APPS)
             addItem(TerminalViewHolder.CREATOR, status, ID_TERMINAL)
+            addItem(DaemonViewHolder.CREATOR, status, ID_APPS)
         }
 
         if (running && !adbPermission) {
