@@ -4,16 +4,16 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "moe.shizuku.privileged.api",
+  "applicationId": "com.lzimul.shizuku",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 1044,
-      "versionName": "1.0.2.r1044.75541cc",
-      "outputFile": "shizuku-v1.0.2.r1044.75541cc-release.apk"
+      "versionCode": 1045,
+      "versionName": "1.1.3.r1045.c5770a3",
+      "outputFile": "shizuku-v1.1.3.r1045.c5770a3-release.apk"
     }
   ],
   "elementType": "File"

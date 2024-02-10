@@ -1,7 +1,6 @@
 package moe.shizuku.starter;
 
 import android.content.IContentProvider;
-import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -92,7 +91,7 @@ public class ServiceStarter {
     }
 
     private static boolean sendBinder(IBinder binder, String token, boolean retry) {
-        String packageName = "moe.shizuku.privileged.api";
+        String packageName = "com.lzimul.shizuku";
         String name = packageName + ".shizuku";
         int userId = 0;
         IContentProvider provider = null;
