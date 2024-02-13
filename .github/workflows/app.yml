@@ -12,11 +12,6 @@ jobs:
     if: ${{ !startsWith(github.event.head_commit.message, '[skip ci]') && github.repository_owner == 'lZiMUl' }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          submodules: 'recursive'
-          fetch-depth: 0
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
