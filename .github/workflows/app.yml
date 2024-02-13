@@ -2,7 +2,7 @@ name: App
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     paths-ignore:
       - '.github/ISSUE_TEMPLATE'
 
