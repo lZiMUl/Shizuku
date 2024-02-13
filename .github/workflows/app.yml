@@ -12,12 +12,7 @@ jobs:
     if: ${{ !startsWith(github.event.head_commit.message, '[skip ci]') && github.repository_owner == 'lZiMUl' }}
 
     steps:
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: 'gradle'
+
       - name: Write key
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
         run: |
