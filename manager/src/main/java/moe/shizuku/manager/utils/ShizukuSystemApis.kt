@@ -2,10 +2,7 @@ package moe.shizuku.manager.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.IPackageManager
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
-import android.content.pm.ParceledListSlice
+import android.content.pm.*
 import android.os.Build
 import android.os.IUserManager
 import android.os.RemoteException
@@ -14,6 +11,7 @@ import rikka.core.ktx.unsafeLazy
 import rikka.shizuku.Shizuku
 import rikka.shizuku.ShizukuBinderWrapper
 import rikka.shizuku.SystemServiceHelper
+import java.util.*
 
 object ShizukuSystemApis {
 
@@ -23,23 +21,11 @@ object ShizukuSystemApis {
 
     @delegate:SuppressLint("NewApi")
     private val permissionManager by unsafeLazy {
-        IPermissionManager.Stub.asInterface(
-            ShizukuBinderWrapper(
-                SystemServiceHelper.getSystemService(
-                    "permissionmgr"
-                )
-            )
-        )
+       IPermissionManager.Stub.asInterface(ShizukuBinderWrapper(SystemServiceHelper.getSystemService("permissionmgr")))
     }
 
     private val userManager by unsafeLazy {
-        IUserManager.Stub.asInterface(
-            ShizukuBinderWrapper(
-                SystemServiceHelper.getSystemService(
-                    Context.USER_SERVICE
-                )
-            )
-        )
+        IUserManager.Stub.asInterface(ShizukuBinderWrapper(SystemServiceHelper.getSystemService(Context.USER_SERVICE)))
     }
 
     private val users = arrayListOf<UserInfoCompat>()
@@ -74,20 +60,14 @@ object ShizukuSystemApis {
     }
 
     fun getUserInfo(userId: Int): UserInfoCompat {
-        return getUsers(useCache = true).firstOrNull { it.id == userId } ?: UserInfoCompat(
-            UserHandleCompat.myUserId(),
-            "Unknown"
-        )
+        return getUsers(useCache = true).firstOrNull { it.id == userId } ?: UserInfoCompat(UserHandleCompat.myUserId(), "Unknown")
     }
 
     fun getInstalledPackages(flags: Int, userId: Int): List<PackageInfo> {
         return if (!Shizuku.pingBinder()) {
             ArrayList()
         } else try {
-            val listSlice: ParceledListSlice<PackageInfo>? = packageManager.getInstalledPackages(
-                flags,
-                userId
-            )
+            val listSlice: ParceledListSlice<PackageInfo>? = packageManager.getInstalledPackages(flags, userId) as ParceledListSlice<PackageInfo>?
             return if (listSlice != null) {
                 listSlice.list
             } else ArrayList()
@@ -120,7 +100,7 @@ object ShizukuSystemApis {
             if (Build.VERSION.SDK_INT >= 30) {
                 permissionManager.grantRuntimePermission(packageName, permissionName, userId)
             } else {
-                packageManager.grantRuntimePermission(packageName, permissionName, userId)
+                packageManager.grantRuntimePermission( packageName, permissionName, userId)
             }
         } catch (tr: RemoteException) {
             throw RuntimeException(tr.message, tr)
