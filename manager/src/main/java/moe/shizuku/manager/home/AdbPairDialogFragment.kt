@@ -25,11 +25,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import moe.shizuku.manager.R
 import moe.shizuku.manager.ShizukuSettings
-import moe.shizuku.manager.adb.*
+import moe.shizuku.manager.adb.AdbInvalidPairingCodeException
+import moe.shizuku.manager.adb.AdbKey
+import moe.shizuku.manager.adb.AdbKeyException
+import moe.shizuku.manager.adb.AdbMdns
+import moe.shizuku.manager.adb.AdbPairingClient
+import moe.shizuku.manager.adb.PreferenceAdbKeyStore
 import moe.shizuku.manager.databinding.AdbPairDialogBinding
 import rikka.lifecycle.viewModels
 import java.net.ConnectException
-import java.net.Inet4Address
 
 @RequiresApi(VERSION_CODES.R)
 class AdbPairDialogFragment : DialogFragment() {
@@ -134,11 +138,17 @@ class AdbPairDialogFragment : DialogFragment() {
                     is ConnectException -> {
                         binding.port.error = context.getString(R.string.cannot_connect_port)
                     }
+
                     is AdbInvalidPairingCodeException -> {
                         binding.pairingCode.error = context.getString(R.string.paring_code_is_wrong)
                     }
+
                     is AdbKeyException -> {
-                        Toast.makeText(context, context.getString(R.string.adb_error_key_store), Toast.LENGTH_LONG)
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.adb_error_key_store),
+                            Toast.LENGTH_LONG
+                        )
                             .apply { setGravity(Gravity.CENTER, 0, 0) }.show()
                     }
                 }

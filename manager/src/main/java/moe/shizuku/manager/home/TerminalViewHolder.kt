@@ -35,7 +35,10 @@ class TerminalViewHolder(private val binding: HomeTerminalBinding, private val r
         if (!data.isRunning) {
             root.isEnabled = false
             summary.text =
-                context.getString(R.string.home_status_service_not_running, context.getString(R.string.app_name))
+                context.getString(
+                    R.string.home_status_service_not_running,
+                    context.getString(R.string.app_name)
+                )
         } else {
             root.isEnabled = true
             summary.text = context.getString(R.string.home_terminal_description)

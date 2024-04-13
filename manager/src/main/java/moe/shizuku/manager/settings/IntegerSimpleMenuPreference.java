@@ -69,7 +69,7 @@ public class IntegerSimpleMenuPreference extends Preference {
                 attrs, R.styleable.SimpleMenuPreference, defStyleAttr, defStyleRes);
 
         int popupStyle = a.getResourceId(R.styleable.SimpleMenuPreference_android_popupMenuStyle, R.style.Widget_Preference_SimpleMenuPreference_PopupMenu);
-        int popupTheme = a.getResourceId(R.styleable.SimpleMenuPreference_android_popupTheme,R.style.ThemeOverlay_Preference_SimpleMenuPreference_PopupMenu);
+        int popupTheme = a.getResourceId(R.styleable.SimpleMenuPreference_android_popupTheme, R.style.ThemeOverlay_Preference_SimpleMenuPreference_PopupMenu);
         Context popupContext;
         if (popupTheme != 0) {
             popupContext = new ContextThemeWrapper(context, popupTheme);
@@ -126,6 +126,15 @@ public class IntegerSimpleMenuPreference extends Preference {
     }
 
     /**
+     * The list of entries to be shown in the list in subsequent dialogs.
+     *
+     * @return The list as an array.
+     */
+    public CharSequence[] getEntries() {
+        return mEntries;
+    }
+
+    /**
      * Sets the human-readable entries to be shown in the list. This will be
      * shown in subsequent dialogs.
      * <p>
@@ -150,12 +159,12 @@ public class IntegerSimpleMenuPreference extends Preference {
     }
 
     /**
-     * The list of entries to be shown in the list in subsequent dialogs.
+     * Returns the array of values to be saved for the preference.
      *
-     * @return The list as an array.
+     * @return The array of values.
      */
-    public CharSequence[] getEntries() {
-        return mEntries;
+    public int[] getEntryValues() {
+        return mEntryValues;
     }
 
     /**
@@ -175,34 +184,6 @@ public class IntegerSimpleMenuPreference extends Preference {
      */
     public void setEntryValues(@ArrayRes int entryValuesResId) {
         setEntryValues(getContext().getResources().getIntArray(entryValuesResId));
-    }
-
-    /**
-     * Returns the array of values to be saved for the preference.
-     *
-     * @return The array of values.
-     */
-    public int[] getEntryValues() {
-        return mEntryValues;
-    }
-
-    /**
-     * Sets the value of the key. This should be one of the entries in
-     * {@link #getEntryValues()}.
-     *
-     * @param value The value to set for the key.
-     */
-    public void setValue(int value) {
-        // Always persist/notify the first time.
-        final boolean changed = mValue != value;
-        if (changed || !mValueSet) {
-            mValue = value;
-            mValueSet = true;
-            persistInt(value);
-            if (changed) {
-                notifyChanged();
-            }
-        }
     }
 
     /**
@@ -243,17 +224,6 @@ public class IntegerSimpleMenuPreference extends Preference {
     }
 
     /**
-     * Sets the value to the given index from the entry values.
-     *
-     * @param index The index of the value to set.
-     */
-    public void setValueIndex(int index) {
-        if (mEntryValues != null) {
-            setValue(mEntryValues[index]);
-        }
-    }
-
-    /**
      * Returns the value of the key. This should be one of the entries in
      * {@link #getEntryValues()}.
      *
@@ -261,6 +231,25 @@ public class IntegerSimpleMenuPreference extends Preference {
      */
     public int getValue() {
         return mValue;
+    }
+
+    /**
+     * Sets the value of the key. This should be one of the entries in
+     * {@link #getEntryValues()}.
+     *
+     * @param value The value to set for the key.
+     */
+    public void setValue(int value) {
+        // Always persist/notify the first time.
+        final boolean changed = mValue != value;
+        if (changed || !mValueSet) {
+            mValue = value;
+            mValueSet = true;
+            persistInt(value);
+            if (changed) {
+                notifyChanged();
+            }
+        }
     }
 
     /**
@@ -293,6 +282,17 @@ public class IntegerSimpleMenuPreference extends Preference {
 
     private int getValueIndex() {
         return findIndexOfValue(mValue);
+    }
+
+    /**
+     * Sets the value to the given index from the entry values.
+     *
+     * @param index The index of the value to set.
+     */
+    public void setValueIndex(int index) {
+        if (mEntryValues != null) {
+            setValue(mEntryValues[index]);
+        }
     }
 
     @Override
@@ -334,36 +334,6 @@ public class IntegerSimpleMenuPreference extends Preference {
         setValue(myState.value);
     }
 
-    private static class SavedState extends BaseSavedState {
-        int value;
-
-        public SavedState(Parcel source) {
-            super(source);
-            value = source.readInt();
-        }
-
-        @Override
-        public void writeToParcel(@NonNull Parcel dest, int flags) {
-            super.writeToParcel(dest, flags);
-            dest.writeInt(value);
-        }
-
-        public SavedState(Parcelable superState) {
-            super(superState);
-        }
-
-        public static final Parcelable.Creator<SavedState> CREATOR =
-                new Parcelable.Creator<SavedState>() {
-                    public SavedState createFromParcel(Parcel in) {
-                        return new SavedState(in);
-                    }
-
-                    public SavedState[] newArray(int size) {
-                        return new SavedState[size];
-                    }
-                };
-    }
-
     @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
@@ -374,6 +344,35 @@ public class IntegerSimpleMenuPreference extends Preference {
         if (mAnchor == null) {
             throw new IllegalStateException("SimpleMenuPreference item layout must contain" +
                     "a view id is android.R.id.empty to support iconSpaceReserved");
+        }
+    }
+
+    private static class SavedState extends BaseSavedState {
+        public static final Parcelable.Creator<SavedState> CREATOR =
+                new Parcelable.Creator<SavedState>() {
+                    public SavedState createFromParcel(Parcel in) {
+                        return new SavedState(in);
+                    }
+
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                };
+        int value;
+
+        public SavedState(Parcel source) {
+            super(source);
+            value = source.readInt();
+        }
+
+        public SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        @Override
+        public void writeToParcel(@NonNull Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+            dest.writeInt(value);
         }
     }
 }

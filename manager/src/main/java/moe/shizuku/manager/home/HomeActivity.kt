@@ -76,7 +76,13 @@ abstract class HomeActivity : AppBarActivity() {
         recyclerView.adapter = adapter
         recyclerView.fixEdgeEffect()
         recyclerView.addItemSpacing(top = 4f, bottom = 4f, unit = TypedValue.COMPLEX_UNIT_DIP)
-        recyclerView.addEdgeSpacing(top = 4f, bottom = 4f, left = 16f, right = 16f, unit = TypedValue.COMPLEX_UNIT_DIP)
+        recyclerView.addEdgeSpacing(
+            top = 4f,
+            bottom = 4f,
+            left = 16f,
+            right = 16f,
+            unit = TypedValue.COMPLEX_UNIT_DIP
+        )
 
         Shizuku.addBinderReceivedListenerSticky(binderReceivedListener)
         Shizuku.addBinderDeadListener(binderDeadListener)
@@ -125,10 +131,11 @@ abstract class HomeActivity : AppBarActivity() {
                     .show()
                 true
             }
+
             R.id.web_site -> {
                 try {
                     val intent = Intent(Intent.ACTION_VIEW)
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE)
                     intent.setData(Uri.parse("https://lzimul.top"))
                     startActivity(intent)
                 } catch (e: Exception) {
@@ -136,6 +143,7 @@ abstract class HomeActivity : AppBarActivity() {
                 }
                 true
             }
+
             R.id.action_stop -> {
                 if (!Shizuku.pingBinder()) {
                     return true
@@ -152,10 +160,12 @@ abstract class HomeActivity : AppBarActivity() {
                     .show()
                 true
             }
+
             R.id.action_settings -> {
                 startActivity(Intent(this, SettingsActivity::class.java))
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

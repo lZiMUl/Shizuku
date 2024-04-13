@@ -45,7 +45,10 @@ class StartAdbViewHolder(binding: HomeStartAdbBinding, root: View) : BaseViewHol
                     if (ClipboardUtils.put(context, Starter.adbCommand)) {
                         Toast.makeText(
                             context,
-                            context.getString(R.string.toast_copied_to_clipboard, Starter.adbCommand),
+                            context.getString(
+                                R.string.toast_copied_to_clipboard,
+                                Starter.adbCommand
+                            ),
                             Toast.LENGTH_SHORT
                         ).show()
                     }

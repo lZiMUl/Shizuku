@@ -28,7 +28,13 @@ class RequestPermissionActivity : AppActivity() {
 
     private lateinit var dialog: Dialog
 
-    private fun setResult(requestUid: Int, requestPid: Int, requestCode: Int, allowed: Boolean, onetime: Boolean) {
+    private fun setResult(
+        requestUid: Int,
+        requestPid: Int,
+        requestCode: Int,
+        allowed: Boolean,
+        onetime: Boolean
+    ) {
         val data = Bundle()
         data.putBoolean(REQUEST_PERMISSION_REPLY_ALLOWED, allowed)
         data.putBoolean(REQUEST_PERMISSION_REPLY_IS_ONETIME, onetime)
@@ -40,21 +46,28 @@ class RequestPermissionActivity : AppActivity() {
     }
 
     private fun checkSelfPermission(): Boolean {
-        val permission = Shizuku.checkRemotePermission("android.permission.GRANT_RUNTIME_PERMISSIONS") == PackageManager.PERMISSION_GRANTED
+        val permission =
+            Shizuku.checkRemotePermission("android.permission.GRANT_RUNTIME_PERMISSIONS") == PackageManager.PERMISSION_GRANTED
         if (permission) return true
 
         val icon = getDrawable(R.drawable.ic_system_icon)
         icon?.setTint(theme.resolveColor(android.R.attr.colorAccent))
 
         val dialog = MaterialAlertDialogBuilder(this)
-                .setIcon(icon)
-                .setTitle("Shizuku: ${getString(R.string.app_management_dialog_adb_is_limited_title)}")
-                .setMessage(getString(R.string.app_management_dialog_adb_is_limited_message, Helps.ADB.get()).toHtml(HtmlCompat.FROM_HTML_OPTION_TRIM_WHITESPACE))
-                .setPositiveButton(android.R.string.ok, null)
-                .setOnDismissListener { finish() }
-                .create()
+            .setIcon(icon)
+            .setTitle("Shizuku: ${getString(R.string.app_management_dialog_adb_is_limited_title)}")
+            .setMessage(
+                getString(
+                    R.string.app_management_dialog_adb_is_limited_message,
+                    Helps.ADB.get()
+                ).toHtml(HtmlCompat.FROM_HTML_OPTION_TRIM_WHITESPACE)
+            )
+            .setPositiveButton(android.R.string.ok, null)
+            .setOnDismissListener { finish() }
+            .create()
         dialog.setOnShowListener {
-            (it as AlertDialog).findViewById<TextView>(android.R.id.message)?.movementMethod = LinkMovementMethod.getInstance()
+            (it as AlertDialog).findViewById<TextView>(android.R.id.message)?.movementMethod =
+                LinkMovementMethod.getInstance()
         }
         try {
             dialog.show()
@@ -120,15 +133,19 @@ class RequestPermissionActivity : AppActivity() {
                 setResult(uid, pid, requestCode, allowed = false, onetime = true)
                 dialog.dismiss()
             }
-            title.text = HtmlCompat.fromHtml(getString(R.string.permission_warning_template,
-                    label, getString(R.string.permission_group_description)))
+            title.text = HtmlCompat.fromHtml(
+                getString(
+                    R.string.permission_warning_template,
+                    label, getString(R.string.permission_group_description)
+                )
+            )
         }
 
         dialog = MaterialAlertDialogBuilder(this)
-                .setView(binding.root)
-                .setCancelable(false)
-                .setOnDismissListener { finish() }
-                .create()
+            .setView(binding.root)
+            .setCancelable(false)
+            .setOnDismissListener { finish() }
+            .create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
     }

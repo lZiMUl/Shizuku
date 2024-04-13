@@ -3,7 +3,6 @@ package moe.shizuku.manager.home
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.os.SystemProperties
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +23,6 @@ import rikka.core.content.asActivity
 import rikka.html.text.HtmlCompat
 import rikka.recyclerview.BaseViewHolder
 import rikka.recyclerview.BaseViewHolder.Creator
-import java.net.Inet4Address
 
 class StartWirelessAdbViewHolder(binding: HomeStartWirelessAdbBinding, root: View) :
     BaseViewHolder<Any?>(root) {

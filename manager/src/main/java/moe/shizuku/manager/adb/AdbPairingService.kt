@@ -1,7 +1,13 @@
 package moe.shizuku.manager.adb
 
 import android.annotation.TargetApi
-import android.app.*
+import android.app.ForegroundServiceStartNotAllowedException
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.RemoteInput
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -47,7 +53,8 @@ class AdbPairingService : Service() {
         }
 
         private fun replyIntent(context: Context, port: Int): Intent {
-            return Intent(context, AdbPairingService::class.java).setAction(replyAction).putExtra(portKey, port)
+            return Intent(context, AdbPairingService::class.java).setAction(replyAction)
+                .putExtra(portKey, port)
         }
     }
 
@@ -87,8 +94,11 @@ class AdbPairingService : Service() {
             startAction -> {
                 onStart()
             }
+
             replyAction -> {
-                val code = RemoteInput.getResultsFromIntent(intent)?.getCharSequence(remoteInputResultKey) ?: ""
+                val code =
+                    RemoteInput.getResultsFromIntent(intent)?.getCharSequence(remoteInputResultKey)
+                        ?: ""
                 val port = intent.getIntExtra(portKey, -1)
                 if (port != -1) {
                     onInput(code.toString(), port)
@@ -96,10 +106,12 @@ class AdbPairingService : Service() {
                     onStart()
                 }
             }
+
             stopAction -> {
                 stopForeground(STOP_FOREGROUND_REMOVE)
                 null
             }
+
             else -> {
                 return START_NOT_STICKY
             }
@@ -111,8 +123,12 @@ class AdbPairingService : Service() {
                 Log.e(tag, "startForeground failed", e)
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-                    && e is ForegroundServiceStartNotAllowedException) {
-                    getSystemService(NotificationManager::class.java).notify(notificationId, notification)
+                    && e is ForegroundServiceStartNotAllowedException
+                ) {
+                    getSystemService(NotificationManager::class.java).notify(
+                        notificationId,
+                        notification
+                    )
                 }
             }
         }
@@ -196,12 +212,15 @@ class AdbPairingService : Service() {
                 is ConnectException -> {
                     getString(R.string.cannot_connect_port)
                 }
+
                 is AdbInvalidPairingCodeException -> {
                     getString(R.string.paring_code_is_wrong)
                 }
+
                 is AdbKeyException -> {
                     getString(R.string.adb_error_key_store)
                 }
+
                 else -> {
                     exception?.let { Log.getStackTraceString(it) }
                 }

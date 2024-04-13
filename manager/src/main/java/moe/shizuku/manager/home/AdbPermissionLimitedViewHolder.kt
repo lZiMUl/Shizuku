@@ -10,7 +10,8 @@ import moe.shizuku.manager.utils.CustomTabsHelper
 import rikka.recyclerview.BaseViewHolder
 import rikka.recyclerview.BaseViewHolder.Creator
 
-class AdbPermissionLimitedViewHolder(binding: HomeExtraStepRequiredBinding, root: View) : BaseViewHolder<Any?>(root) {
+class AdbPermissionLimitedViewHolder(binding: HomeExtraStepRequiredBinding, root: View) :
+    BaseViewHolder<Any?>(root) {
 
     companion object {
         val CREATOR = Creator<Any> { inflater: LayoutInflater, parent: ViewGroup? ->
@@ -21,6 +22,11 @@ class AdbPermissionLimitedViewHolder(binding: HomeExtraStepRequiredBinding, root
     }
 
     init {
-        binding.button1.setOnClickListener { v: View -> CustomTabsHelper.launchUrlOrCopy(v.context, Helps.ADB_PERMISSION.get()) }
+        binding.button1.setOnClickListener { v: View ->
+            CustomTabsHelper.launchUrlOrCopy(
+                v.context,
+                Helps.ADB_PERMISSION.get()
+            )
+        }
     }
 }

@@ -4,9 +4,8 @@ import android.system.Os;
 
 public class UserHandleCompat {
 
-    private static final int MY_USER_ID = getUserId(Os.getuid());
-
     public static final int PER_USER_RANGE = 100000;
+    private static final int MY_USER_ID = getUserId(Os.getuid());
 
     public static int getUserId(int uid) {
         return uid / PER_USER_RANGE;

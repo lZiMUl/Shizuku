@@ -9,11 +9,10 @@ import androidx.annotation.Nullable;
 
 public class CheckedImageView extends ImageView implements Checkable {
 
-    private boolean mChecked;
-
     private static final int[] CHECKED_STATE_SET = {
             android.R.attr.state_checked
     };
+    private boolean mChecked;
 
     public CheckedImageView(Context context) {
         super(context);
@@ -32,16 +31,16 @@ public class CheckedImageView extends ImageView implements Checkable {
     }
 
     @Override
+    public boolean isChecked() {
+        return mChecked;
+    }
+
+    @Override
     public void setChecked(boolean checked) {
         if (mChecked != checked) {
             mChecked = checked;
             refreshDrawableState();
         }
-    }
-
-    @Override
-    public boolean isChecked() {
-        return mChecked;
     }
 
     @Override

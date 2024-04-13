@@ -26,8 +26,9 @@ private const val kExportedKeySize = 64
 private const val kPairingPacketHeaderSize = 6
 
 private class PeerInfo(
-        val type: Byte,
-        data: ByteArray) {
+    val type: Byte,
+    data: ByteArray
+) {
 
     val data = ByteArray(kMaxPeerInfoSize - 1)
 
@@ -69,9 +70,10 @@ private class PeerInfo(
 }
 
 private class PairingPacketHeader(
-        val version: Byte,
-        val type: Byte,
-        val payload: Int) {
+    val version: Byte,
+    val type: Byte,
+    val payload: Int
+) {
 
     enum class Type(val value: Byte) {
         SPAKE2_MSG(0.toByte()),
@@ -104,7 +106,10 @@ private class PairingPacketHeader(
             val payload = buffer.int
 
             if (version < kMinSupportedKeyHeaderVersion || version > kMaxSupportedKeyHeaderVersion) {
-                Log.e(TAG, "PairingPacketHeader version mismatch (us=$kCurrentKeyHeaderVersion them=${version})")
+                Log.e(
+                    TAG,
+                    "PairingPacketHeader version mismatch (us=$kCurrentKeyHeaderVersion them=${version})"
+                )
                 return null
             }
             if (type != Type.SPAKE2_MSG.value && type != Type.PEER_INFO.value) {
@@ -162,7 +167,12 @@ private class PairingContext private constructor(private val nativePtr: Long) {
 }
 
 @RequiresApi(Build.VERSION_CODES.R)
-class AdbPairingClient(private val host: String, private val port: Int, private val pairCode: String, private val key: AdbKey) : Closeable {
+class AdbPairingClient(
+    private val host: String,
+    private val port: Int,
+    private val pairCode: String,
+    private val key: AdbKey
+) : Closeable {
 
     private enum class State {
         Ready,
@@ -213,7 +223,8 @@ class AdbPairingClient(private val host: String, private val port: Int, private 
         outputStream = DataOutputStream(sslSocket.outputStream)
 
         val pairCodeBytes = pairCode.toByteArray()
-        val keyMaterial = Conscrypt.exportKeyingMaterial(sslSocket, kExportedKeyLabel, null, kExportedKeySize)
+        val keyMaterial =
+            Conscrypt.exportKeyingMaterial(sslSocket, kExportedKeyLabel, null, kExportedKeySize)
         val passwordBytes = ByteArray(pairCode.length + keyMaterial.size)
         pairCodeBytes.copyInto(passwordBytes)
         keyMaterial.copyInto(passwordBytes, pairCodeBytes.size)
@@ -223,7 +234,10 @@ class AdbPairingClient(private val host: String, private val port: Int, private 
         this.pairingContext = pairingContext
     }
 
-    private fun createHeader(type: PairingPacketHeader.Type, payloadSize: Int): PairingPacketHeader {
+    private fun createHeader(
+        type: PairingPacketHeader.Type,
+        payloadSize: Int
+    ): PairingPacketHeader {
         return PairingPacketHeader(kCurrentKeyHeaderVersion, type.value, payloadSize)
     }
 
@@ -256,8 +270,7 @@ class AdbPairingClient(private val host: String, private val port: Int, private 
         val theirMessage = ByteArray(theirHeader.payload)
         inputStream.readFully(theirMessage)
 
-        if (!pairingContext.initCipher(theirMessage)) return false
-        return true
+        return pairingContext.initCipher(theirMessage)
     }
 
     private fun doExchangePeerInfo(): Boolean {
@@ -275,7 +288,8 @@ class AdbPairingClient(private val host: String, private val port: Int, private 
         val theirMessage = ByteArray(theirHeader.payload)
         inputStream.readFully(theirMessage)
 
-        val decrypted = pairingContext.decrypt(theirMessage) ?: throw AdbInvalidPairingCodeException()
+        val decrypted =
+            pairingContext.decrypt(theirMessage) ?: throw AdbInvalidPairingCodeException()
         if (decrypted.size != kMaxPeerInfoSize) {
             Log.e(TAG, "Got size=${decrypted.size} PeerInfo.size=$kMaxPeerInfoSize")
             return false

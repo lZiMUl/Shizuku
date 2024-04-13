@@ -45,7 +45,13 @@ abstract class AppBarActivity : AppActivity() {
     }
 
     override fun setContentView(view: View?) {
-        setContentView(view, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        setContentView(
+            view,
+            FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        )
     }
 
     override fun setContentView(view: View?, params: ViewGroup.LayoutParams?) {

@@ -53,7 +53,7 @@
     <string name="home_learn_more_description">瞭解如何使用 Shizuku 開發</string>
     <string name="app_management_item_summary_requires_root">* 需要以 Root 執行的 Shizuku</string>
     <string name="settings_translation_contributors">翻譯貢獻者</string>
-    <string name="translation_contributors"/>
+    <string name="translation_contributors" />
     <string name="settings_translation">參與翻譯</string>
     <string name="settings_translation_summary">協助我們將 %s 翻譯至您的語言</string>
     <string name="dialog_stop_message">Shizuku 服務將被停止。</string>

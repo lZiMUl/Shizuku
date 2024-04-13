@@ -20,10 +20,6 @@ import rikka.html.text.HtmlCompat;
 
 public class CustomTabsHelper {
 
-    public interface OnCreateIntentBuilderListener {
-        void onCreateHelpIntentBuilder(Context context, CustomTabsIntent.Builder builder);
-    }
-
     private static OnCreateIntentBuilderListener sOnCreateIntentBuilderListener;
 
     public static void setOnCreateIntentBuilderListener(OnCreateIntentBuilderListener onCreateIntentBuilderListener) {
@@ -85,5 +81,9 @@ public class CustomTabsHelper {
                 }
             }
         }
+    }
+
+    public interface OnCreateIntentBuilderListener {
+        void onCreateHelpIntentBuilder(Context context, CustomTabsIntent.Builder builder);
     }
 }

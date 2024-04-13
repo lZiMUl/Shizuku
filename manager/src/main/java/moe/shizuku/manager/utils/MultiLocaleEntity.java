@@ -9,17 +9,12 @@ import moe.shizuku.manager.ShizukuSettings;
 
 public class MultiLocaleEntity extends LinkedHashMap<String, String> {
 
-    public abstract static class LocaleProvider {
-        public abstract Locale get();
-    }
-
     public static final LocaleProvider DEFAULT_LOCAL_PROVIDER = new LocaleProvider() {
         @Override
         public Locale get() {
             return ShizukuSettings.getLocale();
         }
     };
-
     private static LocaleProvider sLocaleProvider = DEFAULT_LOCAL_PROVIDER;
 
     public static void setLocaleProvider(@NonNull LocaleProvider localeProvider) {
@@ -72,5 +67,9 @@ public class MultiLocaleEntity extends LinkedHashMap<String, String> {
             }
         }
         return null;
+    }
+
+    public abstract static class LocaleProvider {
+        public abstract Locale get();
     }
 }

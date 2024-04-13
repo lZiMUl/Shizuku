@@ -1,5 +1,7 @@
 package moe.shizuku.manager;
 
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
 import android.app.ActivityThread;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -16,8 +18,6 @@ import java.util.Locale;
 
 import moe.shizuku.manager.utils.EmptySharedPreferencesImpl;
 import moe.shizuku.manager.utils.EnvironmentUtils;
-
-import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 public class ShizukuSettings {
 
@@ -63,18 +63,6 @@ public class ShizukuSettings {
         }
     }
 
-    @IntDef({
-            LaunchMethod.UNKNOWN,
-            LaunchMethod.ROOT,
-            LaunchMethod.ADB,
-    })
-    @Retention(SOURCE)
-    public @interface LaunchMethod {
-        int UNKNOWN = -1;
-        int ROOT = 0;
-        int ADB = 1;
-    }
-
     @LaunchMethod
     public static int getLastLaunchMode() {
         return getPreferences().getInt("mode", LaunchMethod.UNKNOWN);
@@ -99,5 +87,17 @@ public class ShizukuSettings {
             return Locale.getDefault();
         }
         return Locale.forLanguageTag(tag);
+    }
+
+    @IntDef({
+            LaunchMethod.UNKNOWN,
+            LaunchMethod.ROOT,
+            LaunchMethod.ADB,
+    })
+    @Retention(SOURCE)
+    public @interface LaunchMethod {
+        int UNKNOWN = -1;
+        int ROOT = 0;
+        int ADB = 1;
     }
 }

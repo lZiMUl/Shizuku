@@ -73,12 +73,15 @@ class StarterActivity : AppBarActivity() {
                     is AdbKeyException -> {
                         message = R.string.adb_error_key_store
                     }
+
                     is NotRootedException -> {
                         message = R.string.start_with_root_failed
                     }
+
                     is ConnectException -> {
                         message = R.string.cannot_connect_port
                     }
+
                     is SSLProtocolException -> {
                         message = R.string.adb_pair_required
                     }
@@ -103,7 +106,8 @@ class StarterActivity : AppBarActivity() {
     }
 }
 
-private class ViewModel(context: Context, root: Boolean, host: String?, port: Int) : androidx.lifecycle.ViewModel() {
+private class ViewModel(context: Context, root: Boolean, host: String?, port: Int) :
+    androidx.lifecycle.ViewModel() {
 
     private val sb = StringBuilder()
     private val _output = MutableLiveData<Resource<StringBuilder>>()

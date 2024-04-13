@@ -33,7 +33,8 @@ struct PairingContextNative {
     uint64_t enc_sequence;
 };
 
-static jlong PairingContext_Constructor(JNIEnv *env, jclass clazz, jboolean isClient, jbyteArray jPassword) {
+static jlong
+PairingContext_Constructor(JNIEnv *env, jclass clazz, jboolean isClient, jbyteArray jPassword) {
     spake2_role_t spake_role;
     const uint8_t *my_name;
     const uint8_t *their_name;
@@ -65,7 +66,8 @@ static jlong PairingContext_Constructor(JNIEnv *env, jclass clazz, jboolean isCl
 
     size_t key_size = 0;
     uint8_t key[SPAKE2_MAX_MSG_SIZE];
-    int status = SPAKE2_generate_msg(spake2_ctx, key, &key_size, SPAKE2_MAX_MSG_SIZE, (uint8_t *) pswd, pswd_size);
+    int status = SPAKE2_generate_msg(spake2_ctx, key, &key_size, SPAKE2_MAX_MSG_SIZE,
+                                     (uint8_t *) pswd, pswd_size);
     if (status != 1 || key_size == 0) {
         LOGE("Unable to generate the SPAKE2 public key.");
 
@@ -90,7 +92,8 @@ static jbyteArray PairingContext_Msg(JNIEnv *env, jobject obj, jlong ptr) {
     return our_msg;
 }
 
-static jboolean PairingContext_InitCipher(JNIEnv *env, jobject obj, jlong ptr, jbyteArray jTheirMsg) {
+static jboolean
+PairingContext_InitCipher(JNIEnv *env, jobject obj, jlong ptr, jbyteArray jTheirMsg) {
     auto res = JNI_TRUE;
 
     auto ctx = (PairingContextNative *) ptr;
@@ -98,7 +101,8 @@ static jboolean PairingContext_InitCipher(JNIEnv *env, jobject obj, jlong ptr, j
     auto their_msg_size = env->GetArrayLength(jTheirMsg);
 
     if (their_msg_size > SPAKE2_MAX_MSG_SIZE) {
-        LOGE("their_msg size [%d] greater then max size [%d].", their_msg_size, SPAKE2_MAX_MSG_SIZE);
+        LOGE("their_msg size [%d] greater then max size [%d].", their_msg_size,
+             SPAKE2_MAX_MSG_SIZE);
         return JNI_FALSE;
     }
 
@@ -127,7 +131,8 @@ static jboolean PairingContext_InitCipher(JNIEnv *env, jobject obj, jlong ptr, j
         return JNI_FALSE;
     }
 
-    ctx->aes_ctx = EVP_AEAD_CTX_new(EVP_aead_aes_128_gcm(), key, sizeof(key), EVP_AEAD_DEFAULT_TAG_LENGTH);
+    ctx->aes_ctx = EVP_AEAD_CTX_new(EVP_aead_aes_128_gcm(), key, sizeof(key),
+                                    EVP_AEAD_DEFAULT_TAG_LENGTH);
 
     if (!ctx->aes_ctx) {
         LOGE("EVP_AEAD_CTX_new");
@@ -153,12 +158,14 @@ static jbyteArray PairingContext_Encrypt(JNIEnv *env, jobject obj, jlong ptr, jb
     memcpy(nonce, &ctx->enc_sequence, sizeof(ctx->enc_sequence));
 
     size_t written_sz;
-    int status = EVP_AEAD_CTX_seal(aes_ctx, out, &written_sz, out_size, nonce, nonce_size, (uint8_t *) in, in_size, nullptr, 0);
+    int status = EVP_AEAD_CTX_seal(aes_ctx, out, &written_sz, out_size, nonce, nonce_size,
+                                   (uint8_t *) in, in_size, nullptr, 0);
 
     env->ReleaseByteArrayElements(jIn, in, 0);
 
     if (!status) {
-        LOGE("Failed to encrypt (in_len=%d, out_len=%" PRIuPTR", out_len_needed=%d)", in_size, out_size, in_size);
+        LOGE("Failed to encrypt (in_len=%d, out_len=%" PRIuPTR", out_len_needed=%d)", in_size,
+             out_size, in_size);
         return nullptr;
     }
     ++ctx->enc_sequence;
@@ -184,12 +191,14 @@ static jbyteArray PairingContext_Decrypt(JNIEnv *env, jobject obj, jlong ptr, jb
     memcpy(nonce, &ctx->dec_sequence, sizeof(ctx->dec_sequence));
 
     size_t written_sz;
-    int status = EVP_AEAD_CTX_open(aes_ctx, out, &written_sz, out_size, nonce, nonce_size, (uint8_t *) in, in_size, nullptr, 0);
+    int status = EVP_AEAD_CTX_open(aes_ctx, out, &written_sz, out_size, nonce, nonce_size,
+                                   (uint8_t *) in, in_size, nullptr, 0);
 
     env->ReleaseByteArrayElements(jIn, in, 0);
 
     if (!status) {
-        LOGE("Failed to decrypt (in_len=%d, out_len=%" PRIuPTR", out_len_needed=%d)", in_size, out_size, in_size);
+        LOGE("Failed to decrypt (in_len=%d, out_len=%" PRIuPTR", out_len_needed=%d)", in_size,
+             out_size, in_size);
         return nullptr;
     }
     ++ctx->dec_sequence;
@@ -223,7 +232,8 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
             {"nativeDestroy",     "(J)V",    (void *) PairingContext_Destroy},
     };
 
-    env->RegisterNatives(env->FindClass("moe/shizuku/manager/adb/PairingContext"), methods_PairingContext,
+    env->RegisterNatives(env->FindClass("moe/shizuku/manager/adb/PairingContext"),
+                         methods_PairingContext,
                          sizeof(methods_PairingContext) / sizeof(JNINativeMethod));
 
     return JNI_VERSION_1_6;

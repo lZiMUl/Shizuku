@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<full-backup-content xmlns:tools="http://schemas.android.com/tools">
+<full-backup-content>
     <include
         domain="sharedpref"
         path="settings.xml" />

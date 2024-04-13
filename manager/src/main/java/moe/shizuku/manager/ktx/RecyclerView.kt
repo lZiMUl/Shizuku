@@ -5,10 +5,10 @@ import android.widget.EdgeEffect
 import androidx.recyclerview.widget.RecyclerView
 
 class FixedAlwaysClipToPaddingEdgeEffectFactory(
-        private val paddingLeft: Int,
-        private val paddingTop: Int,
-        private val paddingRight: Int,
-        private val paddingBottom: Int
+    private val paddingLeft: Int,
+    private val paddingTop: Int,
+    private val paddingRight: Int,
+    private val paddingBottom: Int
 ) : RecyclerView.EdgeEffectFactory() {
 
 
@@ -23,20 +23,31 @@ class FixedAlwaysClipToPaddingEdgeEffectFactory(
 
                 when (direction) {
                     DIRECTION_LEFT -> {
-                        setSize(view.measuredHeight - paddingTop - paddingBottom,
-                                view.measuredWidth - paddingLeft - paddingRight)
+                        setSize(
+                            view.measuredHeight - paddingTop - paddingBottom,
+                            view.measuredWidth - paddingLeft - paddingRight
+                        )
                     }
+
                     DIRECTION_TOP -> {
-                        setSize(view.measuredWidth - paddingLeft - paddingRight,
-                                view.measuredHeight - paddingTop - paddingBottom)
+                        setSize(
+                            view.measuredWidth - paddingLeft - paddingRight,
+                            view.measuredHeight - paddingTop - paddingBottom
+                        )
                     }
+
                     DIRECTION_RIGHT -> {
-                        setSize(view.measuredHeight - paddingTop - paddingBottom,
-                                view.measuredWidth - paddingLeft - paddingRight)
+                        setSize(
+                            view.measuredHeight - paddingTop - paddingBottom,
+                            view.measuredWidth - paddingLeft - paddingRight
+                        )
                     }
+
                     DIRECTION_BOTTOM -> {
-                        setSize(view.measuredWidth - paddingLeft - paddingRight,
-                                view.measuredHeight - paddingTop - paddingBottom)
+                        setSize(
+                            view.measuredWidth - paddingLeft - paddingRight,
+                            view.measuredHeight - paddingTop - paddingBottom
+                        )
                     }
                 }
             }
@@ -49,12 +60,15 @@ class FixedAlwaysClipToPaddingEdgeEffectFactory(
                     DIRECTION_LEFT -> {
                         c.translate(paddingBottom.toFloat(), 0f)
                     }
+
                     DIRECTION_TOP -> {
                         c.translate(paddingLeft.toFloat(), paddingTop.toFloat())
                     }
+
                     DIRECTION_RIGHT -> {
                         c.translate(-paddingTop.toFloat(), 0f)
                     }
+
                     DIRECTION_BOTTOM -> {
                         c.translate(paddingRight.toFloat(), paddingBottom.toFloat())
                     }

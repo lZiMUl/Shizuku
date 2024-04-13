@@ -21,6 +21,11 @@ class LearnMoreViewHolder(binding: HomeLearnMoreBinding, root: View) : BaseViewH
     }
 
     init {
-        root.setOnClickListener { v: View -> CustomTabsHelper.launchUrlOrCopy(v.context, Helps.HOME.get()) }
+        root.setOnClickListener { v: View ->
+            CustomTabsHelper.launchUrlOrCopy(
+                v.context,
+                Helps.HOME.get()
+            )
+        }
     }
 }

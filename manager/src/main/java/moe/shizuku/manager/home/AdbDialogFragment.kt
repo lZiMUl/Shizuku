@@ -19,7 +19,6 @@ import moe.shizuku.manager.R
 import moe.shizuku.manager.adb.AdbMdns
 import moe.shizuku.manager.databinding.AdbDialogBinding
 import moe.shizuku.manager.starter.StarterActivity
-import java.net.InetAddress
 
 @RequiresApi(Build.VERSION_CODES.R)
 class AdbDialogFragment : DialogFragment() {

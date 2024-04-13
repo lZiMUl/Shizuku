@@ -14,7 +14,6 @@ import moe.shizuku.manager.adb.AdbProtocol.A_STLS
 import moe.shizuku.manager.adb.AdbProtocol.A_STLS_VERSION
 import moe.shizuku.manager.adb.AdbProtocol.A_VERSION
 import moe.shizuku.manager.adb.AdbProtocol.A_WRTE
-import moe.shizuku.manager.ktx.logd
 import rikka.core.util.BuildUtils
 import java.io.Closeable
 import java.io.DataInputStream
@@ -26,7 +25,8 @@ import javax.net.ssl.SSLSocket
 
 private const val TAG = "AdbClient"
 
-class AdbClient(private val host: String, private val port: Int, private val key: AdbKey) : Closeable {
+class AdbClient(private val host: String, private val port: Int, private val key: AdbKey) :
+    Closeable {
 
     private lateinit var socket: Socket
     private lateinit var plainInputStream: DataInputStream
@@ -103,19 +103,23 @@ class AdbClient(private val host: String, private val port: Int, private val key
                     }
                 }
             }
+
             A_CLSE -> {
                 val remoteId = message.arg0
                 write(A_CLSE, localId, remoteId)
             }
+
             else -> {
                 error("not A_OKAY or A_CLSE")
             }
         }
     }
 
-    private fun write(command: Int, arg0: Int, arg1: Int, data: ByteArray? = null) = write(AdbMessage(command, arg0, arg1, data))
+    private fun write(command: Int, arg0: Int, arg1: Int, data: ByteArray? = null) =
+        write(AdbMessage(command, arg0, arg1, data))
 
-    private fun write(command: Int, arg0: Int, arg1: Int, data: String) = write(AdbMessage(command, arg0, arg1, data))
+    private fun write(command: Int, arg0: Int, arg1: Int, data: String) =
+        write(AdbMessage(command, arg0, arg1, data))
 
     private fun write(message: AdbMessage) {
         outputStream.write(message.toByteArray())

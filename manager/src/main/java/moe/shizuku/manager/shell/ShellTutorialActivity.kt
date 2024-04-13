@@ -12,7 +12,11 @@ import moe.shizuku.manager.databinding.TerminalTutorialActivityBinding
 import moe.shizuku.manager.ktx.toHtml
 import moe.shizuku.manager.utils.CustomTabsHelper
 import rikka.html.text.HtmlCompat
-import rikka.insets.*
+import rikka.insets.initialPaddingBottom
+import rikka.insets.initialPaddingLeft
+import rikka.insets.initialPaddingRight
+import rikka.insets.initialPaddingTop
+import rikka.insets.setInitialPadding
 import kotlin.math.roundToInt
 
 class ShellTutorialActivity : AppBarActivity() {
@@ -28,13 +32,22 @@ class ShellTutorialActivity : AppBarActivity() {
             if (tree == null) return@registerForActivityResult
 
             val cr = contentResolver
-            val doc = DocumentsContract.buildDocumentUriUsingTree(tree, DocumentsContract.getTreeDocumentId(tree))
+            val doc = DocumentsContract.buildDocumentUriUsingTree(
+                tree,
+                DocumentsContract.getTreeDocumentId(tree)
+            )
             val child =
-                DocumentsContract.buildChildDocumentsUriUsingTree(tree, DocumentsContract.getTreeDocumentId(tree))
+                DocumentsContract.buildChildDocumentsUriUsingTree(
+                    tree,
+                    DocumentsContract.getTreeDocumentId(tree)
+                )
 
             cr.query(
                 child,
-                arrayOf(DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME),
+                arrayOf(
+                    DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                    DocumentsContract.Document.COLUMN_DISPLAY_NAME
+                ),
                 null,
                 null,
                 null
@@ -43,13 +56,21 @@ class ShellTutorialActivity : AppBarActivity() {
                     val id = it.getString(0)
                     val name = it.getString(1)
                     if (name == SH_NAME || name == DEX_NAME) {
-                        DocumentsContract.deleteDocument(cr, DocumentsContract.buildDocumentUriUsingTree(tree, id))
+                        DocumentsContract.deleteDocument(
+                            cr,
+                            DocumentsContract.buildDocumentUriUsingTree(tree, id)
+                        )
                     }
                 }
             }
 
             fun writeToDocument(name: String) {
-                DocumentsContract.createDocument(contentResolver, doc, "application/octet-stream", name)?.runCatching {
+                DocumentsContract.createDocument(
+                    contentResolver,
+                    doc,
+                    "application/octet-stream",
+                    name
+                )?.runCatching {
                     cr.openOutputStream(this)?.let { assets.open(name).copyTo(it) }
                 }
             }
@@ -80,7 +101,10 @@ class ShellTutorialActivity : AppBarActivity() {
             val dexName = "<font face=\"monospace\">$DEX_NAME</font>"
 
             summary.text =
-                getString(R.string.rish_description, shName).toHtml(HtmlCompat.FROM_HTML_OPTION_TRIM_WHITESPACE)
+                getString(
+                    R.string.rish_description,
+                    shName
+                ).toHtml(HtmlCompat.FROM_HTML_OPTION_TRIM_WHITESPACE)
 
             text1.text = getString(R.string.terminal_tutorial_1, shName, dexName).toHtml()
 
@@ -103,7 +127,12 @@ class ShellTutorialActivity : AppBarActivity() {
             ).toHtml()
 
             button1.setOnClickListener { openDocumentsTree.launch(null) }
-            button2.setOnClickListener { v: View -> CustomTabsHelper.launchUrlOrCopy(v.context, Helps.RISH.get()) }
+            button2.setOnClickListener { v: View ->
+                CustomTabsHelper.launchUrlOrCopy(
+                    v.context,
+                    Helps.RISH.get()
+                )
+            }
         }
     }
 }

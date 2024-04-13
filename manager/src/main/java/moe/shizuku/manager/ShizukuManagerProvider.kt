@@ -32,7 +32,8 @@ class ShizukuManagerProvider : ShizukuProvider() {
                 extras.classLoader = BinderContainer::class.java.classLoader
 
                 val token = extras.getString(USER_SERVICE_ARG_TOKEN) ?: return null
-                val binder = extras.getParcelable<BinderContainer>(EXTRA_BINDER)?.binder ?: return null
+                val binder =
+                    extras.getParcelable<BinderContainer>(EXTRA_BINDER)?.binder ?: return null
 
                 val countDownLatch = CountDownLatch(1)
                 var reply: Bundle? = Bundle()
@@ -41,10 +42,15 @@ class ShizukuManagerProvider : ShizukuProvider() {
 
                     override fun onBinderReceived() {
                         try {
-                            Shizuku.attachUserService(binder, bundleOf(
-                                USER_SERVICE_ARG_TOKEN to token
-                            ))
-                            reply!!.putParcelable(EXTRA_BINDER, BinderContainer(Shizuku.getBinder()))
+                            Shizuku.attachUserService(
+                                binder, bundleOf(
+                                    USER_SERVICE_ARG_TOKEN to token
+                                )
+                            )
+                            reply!!.putParcelable(
+                                EXTRA_BINDER,
+                                BinderContainer(Shizuku.getBinder())
+                            )
                         } catch (e: Throwable) {
                             LOGGER.e(e, "attachUserService $token")
                             reply = null

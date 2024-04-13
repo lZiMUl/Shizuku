@@ -8,7 +8,14 @@ import android.graphics.drawable.AdaptiveIconDrawable
 import android.os.Build
 import android.widget.ImageView
 import androidx.collection.LruCache
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.zhanghai.android.appiconloader.AppIconLoader
 import moe.shizuku.manager.R
 import rikka.core.util.BuildUtils
@@ -18,7 +25,8 @@ import kotlin.coroutines.CoroutineContext
 
 object AppIconCache : CoroutineScope {
 
-    private class AppIconLruCache constructor(maxSize: Int) : LruCache<Triple<String, Int, Int>, Bitmap>(maxSize) {
+    private class AppIconLruCache(maxSize: Int) :
+        LruCache<Triple<String, Int, Int>, Bitmap>(maxSize) {
 
         override fun sizeOf(key: Triple<String, Int, Int>, bitmap: Bitmap): Int {
             return bitmap.byteCount / 1024
@@ -69,14 +77,15 @@ object AppIconCache : CoroutineScope {
     }
 
     @SuppressLint("NewApi")
-    fun getOrLoadBitmap(context: Context, info: ApplicationInfo, userId: Int, size: Int): Bitmap? {
+    fun getOrLoadBitmap(context: Context, info: ApplicationInfo, userId: Int, size: Int): Bitmap {
         val cachedBitmap = get(info.packageName, userId, size)
         if (cachedBitmap != null) {
             return cachedBitmap
         }
         var loader = appIconLoaders[size]
         if (loader == null) {
-            val shrinkNonAdaptiveIcons = BuildUtils.atLeast30 && context.applicationInfo.loadIcon(context.packageManager) is AdaptiveIconDrawable
+            val shrinkNonAdaptiveIcons =
+                BuildUtils.atLeast30 && context.applicationInfo.loadIcon(context.packageManager) is AdaptiveIconDrawable
             loader = AppIconLoader(size, shrinkNonAdaptiveIcons, context)
             appIconLoaders[size] = loader
         }
@@ -86,11 +95,15 @@ object AppIconCache : CoroutineScope {
     }
 
     @JvmStatic
-    fun loadIconBitmapAsync(context: Context,
-                            info: ApplicationInfo, userId: Int,
-                            view: ImageView): Job {
+    fun loadIconBitmapAsync(
+        context: Context,
+        info: ApplicationInfo, userId: Int,
+        view: ImageView
+    ): Job {
         return launch {
-            val size = view.measuredWidth.let { if (it > 0) it else context.resources.getDimensionPixelSize(R.dimen.default_app_icon_size) }
+            val size = view.measuredWidth.let {
+                if (it > 0) it else context.resources.getDimensionPixelSize(R.dimen.default_app_icon_size)
+            }
             val cachedBitmap = get(info.packageName, userId, size)
             if (cachedBitmap != null) {
                 view.setImageBitmap(cachedBitmap)

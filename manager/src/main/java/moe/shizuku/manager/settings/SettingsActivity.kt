@@ -19,8 +19,8 @@ class SettingsActivity : AppBarFragmentActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, SettingsFragment())
-                    .commit()
+                .replace(R.id.fragment_container, SettingsFragment())
+                .commit()
         }
     }
 }

@@ -39,8 +39,8 @@
             android:id="@android:id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?textAppearanceBodyMedium"
             android:layout_marginTop="2sp"
+            android:textAppearance="?textAppearanceBodyMedium"
             android:textColor="?textColorOnSurfaceHighEmphasis"
             android:textSize="14sp"
             tools:text="moe.shizuku.manager" />
@@ -54,9 +54,9 @@
             <TextView
                 android:id="@+id/requires_root"
                 android:layout_width="wrap_content"
-                android:textAppearance="?textAppearanceBodyMedium"
                 android:layout_height="wrap_content"
-                android:text="@string/app_management_item_summary_requires_root" />
+                android:text="@string/app_management_item_summary_requires_root"
+                android:textAppearance="?textAppearanceBodyMedium" />
 
         </LinearLayout>
 

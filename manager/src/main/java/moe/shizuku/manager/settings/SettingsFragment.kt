@@ -10,7 +10,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.preference.*
+import androidx.preference.ListPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.TwoStatePreference
 import androidx.recyclerview.widget.RecyclerView
 import moe.shizuku.manager.R
 import moe.shizuku.manager.ShizukuSettings
@@ -29,7 +33,7 @@ import rikka.recyclerview.addEdgeSpacing
 import rikka.recyclerview.fixEdgeEffect
 import rikka.shizuku.manager.ShizukuLocales
 import rikka.widget.borderview.BorderRecyclerView
-import java.util.*
+import java.util.Locale
 import moe.shizuku.manager.ShizukuSettings.LANGUAGE as KEY_LANGUAGE
 import moe.shizuku.manager.ShizukuSettings.NIGHT_MODE as KEY_NIGHT_MODE
 
@@ -61,7 +65,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         translationContributorsPreference = findPreference("translation_contributors")!!
         useSystemColorPreference = findPreference(KEY_USE_SYSTEM_COLOR)!!
 
-        val componentName = ComponentName(context.packageName, BootCompleteReceiver::class.java.name)
+        val componentName =
+            ComponentName(context.packageName, BootCompleteReceiver::class.java.name)
 
         startOnBootPreference.isChecked = context.packageManager.isComponentEnabled(componentName)
         startOnBootPreference.onPreferenceChangeListener =
@@ -126,7 +131,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         translationPreference.summary =
-            context.getString(R.string.settings_translation_summary, context.getString(R.string.app_name))
+            context.getString(
+                R.string.settings_translation_summary,
+                context.getString(R.string.app_name)
+            )
         translationPreference.setOnPreferenceClickListener {
             CustomTabsHelper.launchUrlOrCopy(context, context.getString(R.string.translation_url))
             true
@@ -145,13 +153,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
         parent: ViewGroup,
         savedInstanceState: Bundle?
     ): RecyclerView {
-        val recyclerView = super.onCreateRecyclerView(inflater, parent, savedInstanceState) as BorderRecyclerView
+        val recyclerView =
+            super.onCreateRecyclerView(inflater, parent, savedInstanceState) as BorderRecyclerView
         recyclerView.fixEdgeEffect()
         recyclerView.addEdgeSpacing(bottom = 8f, unit = TypedValue.COMPLEX_UNIT_DIP)
 
         val lp = recyclerView.layoutParams
         if (lp is FrameLayout.LayoutParams) {
-            lp.rightMargin = recyclerView.context.resources.getDimension(R.dimen.rd_activity_horizontal_margin).toInt()
+            lp.rightMargin =
+                recyclerView.context.resources.getDimension(R.dimen.rd_activity_horizontal_margin)
+                    .toInt()
             lp.leftMargin = lp.rightMargin
         }
 
@@ -202,6 +213,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             TextUtils.isEmpty(currentLocaleTag) || "SYSTEM" == currentLocaleTag -> {
                 getString(R.string.follow_system)
             }
+
             currentLocaleIndex != -1 -> {
                 val localizedLocale = localizedLocales[currentLocaleIndex]
                 val newLineIndex = localizedLocale.indexOf('\n')
@@ -211,6 +223,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     localizedLocale.subSequence(0, newLineIndex).toString()
                 }
             }
+
             else -> {
                 ""
             }
